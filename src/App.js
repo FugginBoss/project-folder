@@ -13,12 +13,31 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ScatterPlot from "./ScatterPlot";
 import "./App.css";
+import Form from 'react-bootstrap/Form';
 
 class App extends Component{
   
   constructor(props) {
     super(props)
     this.state={data:[]}
+  }
+
+  // Percy added this function to load the data from the csv file
+  componentDidMount() {
+    var self = this
+    d3.csv(dataset, function (d) {
+      return {
+        state: d.state,
+        sentiment_score: d.sentiment_score,
+        political_bias: d.political_bias,
+        trust_score: d.trust_score,
+      }
+    }).then(function (csv_data) {
+      self.setState({ data: csv_data })
+    })
+      .catch(function (err) {
+        console.log(err);
+      })
   }
 
   handleGraphSelect = (graphType) => {
