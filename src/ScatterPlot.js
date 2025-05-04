@@ -5,7 +5,9 @@ class ScatterPlot extends Component{
   
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      selectedLabel: "Validity"
+    }
     
   }
 
@@ -18,18 +20,28 @@ class ScatterPlot extends Component{
     this.renderChart();
   }
 
+  handleFilterChange = (event) => {
+    this.setState({selectedLabel: event.target.value})
+  }
+
   renderChart() {
+    d3.select(".innerChart").selectAll("*").remove();
+    d3.select(".scatterPlot").selectAll("text").remove();
+
     let data = this.props.data1
+
+    data = data.filter(d => d.num_shares < 10000 && d.num_comments < 10000)
+    data = data.slice(0, 200)
     
     const margin = {top: 40, right: 120, bottom: 50, left: 80};
-    const width = 800;
+    const width = 700;
     const height = 400;
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
     const svg = d3.select(".scatterPlot").attr("width", width).attr("height", height);
     const chart = d3.select(".innerChart").attr("transform", `translate(${margin.left},${margin.top})`);
-
+    
     const numShares = data.map(d => d.num_shares)
     const numComment = data.map(d => d.num_comments)
 
@@ -45,11 +57,21 @@ class ScatterPlot extends Component{
     chart.selectAll("circle").data(data).join("circle").attr("r", 5).attr("fill", "#69b3a2")
     .attr("cx", d => xScale(d.num_shares)).attr("cy", d => yScale(d.num_comments))
     .attr('fill', d => {
-      if (d.label === "fake") {
-        return 'purple';
+      if(this.state.selectedLabel === "Validity") {
+        if (d.label === "Fake") {
+          return 'purple';
+        }
+        else {
+          return 'blue';
+        }
       }
       else {
-        return 'blue';
+        if (d.is_satirical === "0") {
+          return 'green'
+        }
+        else {
+          return 'red'
+        }
       }
     })
 
@@ -70,7 +92,7 @@ class ScatterPlot extends Component{
 
     svg.append("text")
       .attr("x", width / 2)
-      .attr("y", margin.top / 2 + 10)
+      .attr("y", margin.top / 2)
       .style("text-anchor", "middle")
       .style("font-size", "25px")
       .style("font-weight", "bold")
@@ -80,32 +102,68 @@ class ScatterPlot extends Component{
       const legendY = margin.top + 100;
     
       if (data.length > 0){
-        svg.append("circle").attr("cx", legendX).attr("cy", legendY).attr("r", 6).style("fill", "blue");
-        svg.append("text").attr("x", legendX + 10).attr("y", legendY + 5).text("Real")
+        svg.append("circle").attr("cx", legendX).attr("cy", legendY).attr("r", 6).style("fill", 
+          () => {
+            if (this.state.selectedLabel === "Validity") {
+              return "blue"
+            }
+            else {
+              return "green"
+            }
+          }
+        );
+        svg.append("text").attr("x", legendX + 10).attr("y", legendY + 5).text(
+          () => {
+            if (this.state.selectedLabel === "Validity") {
+              return "Real"
+            }
+            else {
+              return "Not Satirical"
+            }
+          }
+        )
     
-        svg.append("circle").attr("cx", legendX).attr("cy", legendY + 20).attr("r", 6).style("fill", "purple");
-        svg.append("text").attr("x", legendX + 10).attr("y", legendY + 25).text("Fake")
+        svg.append("circle").attr("cx", legendX).attr("cy", legendY + 20).attr("r", 6).style("fill", 
+          () => {
+            if (this.state.selectedLabel === "Validity") {
+              return "purple"
+            }
+            else {
+              return "red"
+            }
+          }
+        );
+        svg.append("text").attr("x", legendX + 10).attr("y", legendY + 25).text(
+          () => {
+            if (this.state.selectedLabel === "Validity") {
+              return "Fake"
+            }
+            else {
+              return "Satirical"
+            }
+          }
+        )
       }
   }
 
   render() {
     return( 
-    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '30px' }}>
+    <div style={{ position: 'relative', width: '700px', height: '400px'}}>
       <svg className="scatterPlot">
         <g className="innerChart"></g>
       </svg>
-
-      <div style={{ marginTop: '40px' }}>
-        <label htmlFor="labelFilter">Filter by Label:</label><br />
-        <select
-          id="labelFilter"
-          value={this.state.selectedLabel}
-          onChange={this.handleFilterChange}
-        >
-          <option value="Satire">Satire</option>
-          <option value="Validity">Validity</option>
-        </select>
-      </div>
+      <label htmlFor="labelFilter"
+      style={{ position: 'absolute', top: '180px', left: '600px', zIndex: 10 }}>
+        Filter by Label:</label><br />
+      <select
+        style={{ position: 'absolute', top: '230px', left: '600px', zIndex: 20 }}
+        id="labelFilter"
+        value={this.state.selectedLabel}
+        onChange={this.handleFilterChange}
+      >
+        <option value="Satire">Satire</option>
+        <option value="Validity">Validity</option>
+      </select>
     </div>
     );
   }

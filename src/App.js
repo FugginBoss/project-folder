@@ -13,7 +13,6 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ScatterPlot from "./ScatterPlot";
 import "./App.css";
-import Form from 'react-bootstrap/Form';
 
 class App extends Component{
   
@@ -31,6 +30,10 @@ class App extends Component{
         sentiment_score: d.sentiment_score,
         political_bias: d.political_bias,
         trust_score: d.trust_score,
+        num_shares: d.num_shares,
+        num_comments: d.num_comments,
+        label: d.label,
+        is_satirical: d.is_satirical
       }
     }).then(function (csv_data) {
       self.setState({ data: csv_data })
