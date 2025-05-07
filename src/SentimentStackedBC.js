@@ -15,6 +15,37 @@ export default class SentimentStackedBC extends Component {
                 received_data = this.props.data2
                 received_data = received_data.map(({ state, political_bias, source_reputation }) => ({ state, political_bias, source_reputation }))
                 console.log("SentimentStackedBC data: ", received_data)
+
+                var data_dict = []
+        for (let i = 0; i < received_data.length; i++) {
+            // console.log("NEVER REACHED HERE");
+            if (received_data[i].state in data_dict) {
+                // have seen it
+                data_dict[received_data[i].state] =
+                {
+                    state: received_data[i].state,
+                    left: Number(data_dict[received_data[i].state].left) + (received_data[i].political_bias === 'Left' ? Number(received_data[i].source_reputation) : 0),
+                    right: Number(data_dict[received_data[i].state].right) + (received_data[i].political_bias === 'Right' ? Number(received_data[i].source_reputation) : 0),
+                    center: Number(data_dict[received_data[i].state].center) + (received_data[i].political_bias === 'Center' ? Number(received_data[i].source_reputation) : 0),
+                    count_left: data_dict[received_data[i].state].count_left + (received_data[i].political_bias === 'Left' ? 1 : 0),
+                    count_right: data_dict[received_data[i].state].count_right + (received_data[i].political_bias === 'Right' ? 1 : 0),
+                    count_center: data_dict[received_data[i].state].count_center + (received_data[i].political_bias === 'Center' ? 1 : 0),
+                }
+            } else {
+                // haven't seen it
+                data_dict[received_data[i].state] =
+                {
+                    state: received_data[i].state,
+                    left: received_data[i].political_bias === 'Left' ? Number(received_data[i].source_reputation) : 0,
+                    right: received_data[i].political_bias === 'Right' ? Number(received_data[i].source_reputation) : 0,
+                    center: received_data[i].political_bias === 'Center' ? Number(received_data[i].source_reputation) : 0,
+                    count_left: received_data[i].political_bias === 'Left' ? 1 : 0,
+                    count_right: received_data[i].political_bias === 'Right' ? 1 : 0,
+                    count_center: received_data[i].political_bias === 'Center' ? 1 : 0,
+                }
+            }
+
+        }
         
                 const data = [
                     { state: "California", reputation: 8, most_common_bias: "left" },
