@@ -29,7 +29,7 @@ export default class SentimentStackedBC extends Component {
                     { state: "New Jersey", reputation: 8, most_common_bias: "left" }
                 ];
         
-                const width = 800;
+                const width = 800+500;
                 const height = 300;
                 const margin = { top: 20, right: 90, bottom: 60, left: 60 };
         
@@ -109,7 +109,7 @@ export default class SentimentStackedBC extends Component {
     // Sentiment score vs number of shares
     render() {
         return (
-            <svg width={800} height={300}>
+            <svg width={800+500} height={300}>
                 <g className="container" />
                 <g className="x-axis" />
                 <g className="y-axis" />

@@ -59,7 +59,7 @@ class ScatterPlot extends Component{
     .attr('fill', d => {
       if(this.state.selectedLabel === "Validity") {
         if (d.label === "Fake") {
-          return 'purple';
+          return 'orange';
         }
         else {
           return 'blue';
@@ -126,7 +126,7 @@ class ScatterPlot extends Component{
         svg.append("circle").attr("cx", legendX).attr("cy", legendY + 20).attr("r", 6).style("fill", 
           () => {
             if (this.state.selectedLabel === "Validity") {
-              return "purple"
+              return "Orange"
             }
             else {
               return "red"
