@@ -18,7 +18,10 @@ class App extends Component{
   
   constructor(props) {
     super(props)
-    this.state={data:[]}
+    this.state={
+      data:[],
+      selectedGraph: 'trust'
+    }
   }
 
   // Percy added this function to load the data from the csv file
@@ -55,7 +58,7 @@ class App extends Component{
       <div className="barGraph">
       <Navbar className="bg-body-tertiary">
           <Container>
-            <Navbar.Brand>Chart Analysis on Fake News Dataset</Navbar.Brand>
+            <Navbar.Brand className="fs-3 text-center w-100">Analysis on Fake News Dataset</Navbar.Brand>
           </Container>
         </Navbar>
         <br>
@@ -63,8 +66,7 @@ class App extends Component{
         <Container>
           <Row>
             <Col>
-              <DropdownButton id="dropdown-item-button" title="Select Graph">
-                <Dropdown.ItemText>Select Graph</Dropdown.ItemText>
+              <DropdownButton id="dropdown-item-button" title="Select Credibility">
                 <Dropdown.Item as="button" onClick={() => this.handleGraphSelect('sentiment')}>Length: Reputation Score</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => this.handleGraphSelect('trust')}>Length: Trust Score</Dropdown.Item>
               </DropdownButton>
@@ -83,9 +85,9 @@ class App extends Component{
         </Container>
 
         <Container>
-          {selectedGraph === 'trust'
+          { this.state.data.length > 0 && selectedGraph === 'trust'
             && <TrustStackedBC data1={this.state.data} />}
-          {selectedGraph === 'sentiment'
+          {this.state.data.length > 0 && selectedGraph === 'sentiment'
             && <SentimentStackedBC data2={this.state.data} />}
         </Container>
 
