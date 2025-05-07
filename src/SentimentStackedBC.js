@@ -13,7 +13,7 @@ export default class SentimentStackedBC extends Component {
         console.log("TrustStackedBC data: ", this.props.data2)
         var received_data = [];
                 received_data = this.props.data2
-                received_data = received_data.map(({ state, political_bias, trust_score }) => ({ state, political_bias, trust_score }))
+                received_data = received_data.map(({ state, political_bias, source_reputation }) => ({ state, political_bias, source_reputation }))
                 console.log("SentimentStackedBC data: ", received_data)
         
                 const data = [

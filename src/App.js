@@ -30,7 +30,7 @@ class App extends Component{
     d3.csv(dataset, function (d) {
       return {
         state: d.state,
-        sentiment_score: d.sentiment_score,
+        source_reputation: d.source_reputation,
         political_bias: d.political_bias,
         trust_score: d.trust_score,
         num_shares: d.num_shares,
