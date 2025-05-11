@@ -13,6 +13,7 @@ export default class SentimentStackedBC extends Component {
         console.log("SentimentStackedBC data: ", this.props.data2)
         var received_data = [];
         received_data = this.props.data2
+        received_data = received_data.filter(d => d.category === "Politics")
         received_data = received_data.map(({ state, political_bias, source_reputation }) => ({ state, political_bias, source_reputation }))
         console.log("SentimentStackedBC filtered data: ", received_data)
 

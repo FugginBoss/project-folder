@@ -38,6 +38,8 @@
 }
 
 .scatterAndLine {
-  padding-left: 30px;
+  display: flex;
+  padding-left: 60px;
   padding-top: 30px;
+  gap: 90px;
 }
