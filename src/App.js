@@ -12,6 +12,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ScatterPlot from "./ScatterPlot";
+import LineChart from'./LineChart.js'
 import "./App.css";
 
 class App extends Component{
@@ -28,15 +29,21 @@ class App extends Component{
   componentDidMount() {
     var self = this
     d3.csv(dataset, function (d) {
+
       return {
         state: d.state,
+        category: d.category,
         source_reputation: d.source_reputation,
         political_bias: d.political_bias,
         trust_score: d.trust_score,
         num_shares: d.num_shares,
         num_comments: d.num_comments,
         label: d.label,
-        is_satirical: d.is_satirical
+        is_satirical: d.is_satirical,
+        date_published: d.date_published,
+        has_images: d.has_images,
+        has_videos: d.has_videos,
+        clickbait_score: d.clickbait_score
       }
     }).then(function (csv_data) {
       self.setState({ data: csv_data })
@@ -93,7 +100,8 @@ class App extends Component{
 
       </div>
       <div className="scatterAndLine"> 
-        <ScatterPlot data1={this.state.data}> </ScatterPlot> 
+        <ScatterPlot data1={this.state.data}> </ScatterPlot>
+        <LineChart data1={this.state.data}/>
       </div>
     </div>;
   }

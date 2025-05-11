@@ -30,8 +30,9 @@ class ScatterPlot extends Component{
 
     let data = this.props.data1
 
-    data = data.filter(d => d.num_shares < 10000 && d.num_comments < 10000)
-    data = data.slice(0, 200)
+    data = data.filter(d => d.category === "Politics")
+    data = data.slice(0, 300)
+    console.log(data)
     
     const margin = {top: 40, right: 120, bottom: 50, left: 80};
     const width = 700;
@@ -40,13 +41,13 @@ class ScatterPlot extends Component{
     const innerHeight = height - margin.top - margin.bottom;
 
     const svg = d3.select(".scatterPlot").attr("width", width).attr("height", height);
-    const chart = d3.select(".innerChart").attr("transform", `translate(${margin.left},${margin.top})`);
+    const chart = svg.select(".innerChart").attr("transform", `translate(${margin.left},${margin.top})`);
     
-    const numShares = data.map(d => d.num_shares)
-    const numComment = data.map(d => d.num_comments)
+    const numShares = data.map(d => +d.num_shares)
+    const numComment = data.map(d => +d.num_comments)
 
-    const xScale = d3.scaleLinear().domain([0, d3.max(numShares)]).range([0, innerWidth]);
-    const yScale = d3.scaleLinear().domain([0, d3.max(numComment)]).range([innerHeight, 0]);
+    const xScale = d3.scaleLinear().domain([0, d3.max(numComment)]).range([0, innerWidth]);
+    const yScale = d3.scaleLinear().domain([0, d3.max(numShares)]).range([innerHeight, 0]);
 
     const xAxis = d3.axisBottom(xScale)
     const yAxis = d3.axisLeft(yScale)
@@ -55,7 +56,7 @@ class ScatterPlot extends Component{
     chart.selectAll(".y-axis").data([null]).join("g").attr('class', 'y-axis').call(yAxis)
 
     chart.selectAll("circle").data(data).join("circle").attr("r", 5).attr("fill", "#69b3a2")
-    .attr("cx", d => xScale(d.num_shares)).attr("cy", d => yScale(d.num_comments))
+    .attr("cx", d => xScale(d.num_comments)).attr("cy", d => yScale(d.num_shares))
     .attr('fill', d => {
       if(this.state.selectedLabel === "Validity") {
         if (d.label === "Fake") {
@@ -79,16 +80,16 @@ class ScatterPlot extends Component{
       .attr("transform", `translate(${innerWidth / 2}, ${innerHeight + 50})`)
       .style("text-anchor", "middle")
       .style("font-size", "20px")
-      .text("Number of Shares");
+      .text("Number of Comments");
     
 
     chart.append("text")
       .attr("transform", "rotate(-90)")
       .attr("x", -innerHeight / 2)
-      .attr("y", -40)
+      .attr("y", -50)
       .style("text-anchor", "middle")
       .style("font-size", "20px")
-      .text("Number of Comments");
+      .text("Number of Shares");
 
     svg.append("text")
       .attr("x", width / 2)

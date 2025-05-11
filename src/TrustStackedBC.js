@@ -6,6 +6,7 @@ class StackBarChart extends Component {
 
         var received_data = [];
         received_data = this.props.data1
+        received_data = received_data.filter(d => d.category === "Politics")
         received_data = received_data.map(({ state, political_bias, trust_score }) => ({ state, political_bias, trust_score }))
         console.log("TrustStackedBC data: ", received_data)
 
