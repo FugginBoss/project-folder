@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/project-folder/static/css/main.017f0b85.css",
+    "main.js": "/project-folder/static/js/main.38a4efd2.js",
+    "static/media/fake_news_dataset.csv": "/project-folder/static/media/fake_news_dataset.287b5ac5698fde0326a8.csv",
+    "index.html": "/project-folder/index.html",
+    "main.017f0b85.css.map": "/project-folder/static/css/main.017f0b85.css.map",
+    "main.38a4efd2.js.map": "/project-folder/static/js/main.38a4efd2.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.017f0b85.css",
+    "static/js/main.38a4efd2.js"
+  ]
+}
